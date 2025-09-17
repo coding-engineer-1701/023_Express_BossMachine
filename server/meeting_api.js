@@ -12,18 +12,18 @@ meetingRouter.get('/', (req, res, next) => {
 
 meetingRouter.post('/', (req, res, next) => {
     try {
-        const { time, date, day, note } = req.body || {};
-        const newMeeting = { time, date, day, note }
+        const newMeeting = createMeeting();
         const created = addToDatabase('meetings', newMeeting);
         res.status(201).send(created);
     } catch(err) {
         err.status = 400;
+        err.message = 'Invalid meeting data';
         return next(err);
     }
 });
 
-meetingRouter.delete('/:meetingId', (req, res, next) => {
-    const deleted = deleteFromDatabasebyId('meetings', req.params.meetingId)
+meetingRouter.delete('/', (req, res, next) => {
+    const deleted = deleteAllFromDatabase('meetings')
 
     if (deleted) {
         res.status(204).send();
