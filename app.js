@@ -1,8 +1,6 @@
 const express = require('express');
 const app = express();
 
-module.exports = app;
-
 // Add middleware for handling CORS requests from index.html
 const cors = require('cors');
 app.use(cors());
@@ -11,14 +9,23 @@ app.use(cors());
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
+// Include node path module
+const path = require('path');
 
-// Mount your existing apiRouter below at the '/api' path.
+// Serve /public/* (so index.html’s links work as written)
+app.use('/public', express.static(path.join(__dirname, 'public')));
+
+// Serve the main page at '/'
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Mount apiRouter
 const apiRouter = require('./server/api');
-
-
 app.use('/api', apiRouter);
 
-// Final call is to error handler
+
+// Error Handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
   const status = err.status || 500;
@@ -27,3 +34,5 @@ app.use((err, req, res, next) => {
 
 
 
+
+module.exports = app;
