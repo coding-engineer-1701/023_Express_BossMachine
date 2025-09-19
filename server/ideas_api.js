@@ -2,14 +2,14 @@ const express = require('express');
 const ideasRouter = express.Router();
 
 const { getAllFromDatabase, getFromDatabaseById, addToDatabase, updateInstanceInDatabase, deleteFromDatabasebyId, deleteAllFromDatabase } = require('./db');
-
+const checkMillionDollarIdea = require('./checkMillionDollarIdea');
 
 ideasRouter.get('/', (req, res, next) => {
     const ideas = getAllFromDatabase('ideas');
     res.status(200).send(ideas); 
 })
 
-ideasRouter.post('/', (req, res, next) => {
+ideasRouter.post('/', checkMillionDollarIdea, (req, res, next) => {
     try {
         const { name, description, numWeeks, weeklyRevenue } = req.body || {};
         const newIdea = {  name, description, numWeeks, weeklyRevenue  }

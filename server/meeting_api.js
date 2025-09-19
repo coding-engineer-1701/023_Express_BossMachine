@@ -2,7 +2,7 @@
 const express = require('express');
 const meetingRouter = express.Router();
 
-const { getAllFromDatabase, getFromDatabaseById, addToDatabase, updateInstanceInDatabase, deleteFromDatabasebyId, deleteAllFromDatabase } = require('./db');
+const { getAllFromDatabase, getFromDatabaseById, addToDatabase, updateInstanceInDatabase, deleteFromDatabasebyId, deleteAllFromDatabase, createMeeting } = require('./db');
 
 
 meetingRouter.get('/', (req, res, next) => {
